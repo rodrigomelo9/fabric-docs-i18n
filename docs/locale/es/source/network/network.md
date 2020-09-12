@@ -1,36 +1,34 @@
-# Blockchain network
+# Red de cadena de bloques
 
-This topic will describe, **at a conceptual level**, how Hyperledger Fabric
-allows organizations to collaborate in the formation of blockchain networks.  If
-you're an architect, administrator or developer, you can use this topic to get a
-solid understanding of the major structure and process components in a
-Hyperledger Fabric blockchain network. This topic will use a manageable worked
-example that introduces all of the major components in a blockchain network.
+Esta sección describe, **a nivel conceptual**, cómo Hyperledger Fabric permite a
+las organizaciones colaborar en la formación de redes de cadena de bloques. Si
+eres arquitecto, administrador o desarrollador, obtendrás una solida comprensión
+de la estructura principal y los procesos que las componen, los cuales serán
+introducidos a partir de un ejemplo práctico.
 
-After reading this topic and understanding the concept of policies, you will
-have a solid understanding of the decisions that organizations need to make to
-establish the policies that control a deployed Hyperledger Fabric network.
-You'll also understand how organizations manage network evolution using
-declarative policies -- a key feature of Hyperledger Fabric. In a nutshell,
-you'll understand the major technical components of Hyperledger Fabric and the
-decisions organizations need to make about them.
+Tras finalizar la lectura, entenderá las decisiones que las organizaciones deben
+tomar para establecer las políticas que controlan una red desplegada de
+Hyperledger Fabric. Además, comprenderá cómo se gestiona gestiona la evolución
+de la red utilizando políticas declarativas -- una característica clave de
+Hyperledger Fabric. En pocas palabras, conocerá sus principales componentes
+técnicos y las decisiones que las organizaciones deben tomar sobre ellos.
 
-## What is a blockchain network?
+## ¿Qué es una red de cadena de bloques?
 
-A blockchain network is a technical infrastructure that provides ledger and
-smart contract (chaincode) services to applications. Primarily, smart contracts
-are used to generate transactions which are subsequently distributed to every
-peer node in the network where they are immutably recorded on their copy of the
-ledger. The users of applications might be end users using client applications
-or blockchain network administrators.
+Una red de cadena de bloques es una infraestructura tecnológica que proporciona
+a aplicaciones servicios de libro mayor y de contratos inteligentes (chaincode).
+Estos últimos se utilizan para generar transacciones que se distribuyen a todos
+los nodos peer de la red, donde se registran de forma inmutable en su copia del
+libro mayor. Las aplicaciones pueden ser las empleadas por usuarios finales o
+los administradores de redes de cadena de bloques.
 
-In most cases, multiple [organizations](../glossary.html#organization) come
-together as a [consortium](../glossary.html#consortium) to form the network and
-their permissions are determined by a set of [policies](../glossary.html#policy)
-that are agreed by the consortium when the network is originally configured.
-Moreover, network policies can change over time subject to the agreement of the
-organizations in the consortium, as we'll discover when we discuss the concept
-of *modification policy*.
+En la mayoría de los casos, múltiples [organizaciones](../glosario.html#organizacion)
+se unen como un [consorcio](../glosario.html#consorcio) para formar la red, y
+sus permisos se determinan por un conjunto de [políticas](../glosario.html#politica)
+que son acordadas cuando la red se configura inicialmente. Además, las políticas
+de la red pueden cambiar a lo largo del tiempo, sujetas al acuerdo de las
+organizaciones del consorcio, como descubriremos cuando discutamos el concepto
+de *política de modificación*.
 
 ## The sample network
 
@@ -935,7 +933,7 @@ investigate a little more how change policy is implemented in Hyperledger
 Fabric.
 
 The key point of understanding is that policy change is managed by a
-policy within the policy itself.  The **modification policy**, or
+policy within the policy itself.  The **política de modificación**, or
 **mod_policy** for short, is a first class policy within a network or channel
 configuration that manages change. Let's give two brief examples of how we've
 **already** used mod_policy to manage change in our network!
