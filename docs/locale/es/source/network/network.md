@@ -22,119 +22,123 @@ los nodos peer de la red, donde se registran de forma inmutable en su copia del
 libro mayor. Las aplicaciones pueden ser las empleadas por usuarios finales o
 los administradores de redes de cadena de bloques.
 
-En la mayoría de los casos, múltiples [organizaciones](../glosario.html#organizacion)
-se unen como un [consorcio](../glosario.html#consorcio) para formar la red, y
-sus permisos se determinan por un conjunto de [políticas](../glosario.html#politica)
+En la mayoría de los casos, múltiples [organizaciones](../glossary.html#organizacion)
+se unen como un [consorcio](../glossary.html#consorcio) para formar la red, y
+sus permisos se determinan por un conjunto de [políticas](../glossary.html#politica)
 que son acordadas cuando la red se configura inicialmente. Además, las políticas
 de la red pueden cambiar a lo largo del tiempo, sujetas al acuerdo de las
 organizaciones del consorcio, como descubriremos cuando discutamos el concepto
 de *política de modificación*.
 
-## The sample network
+## La red de ejemplo
 
-Before we start, let's show you what we're aiming at! Here's a diagram
-representing the **final state** of our sample network.
+¡Antes de comenzar, les mostraremos cual es el objetivo! A continuación veremos
+un diagrama que representa el **estado final** de nuestra red de ejemplo.
 
-Don't worry that this might look complicated! As we go through this topic, we
-will build up the network piece by piece, so that you see how the organizations
-R1, R2, R3 and R4 contribute infrastructure to the network to help form it. This
-infrastructure implements the blockchain network, and it is governed by policies
-agreed by the organizations who form the network -- for example, who can add new
-organizations. You'll discover how applications consume the ledger and smart
-contract services provided by the blockchain network.
+¡No te preocupes si parece complicado! A medida que avancemos, construiremos la
+red pieza por pieza, para que veas cómo las organizaciones R1, R2, R3 y R4
+contribuyen a la infraestructura, ayudando a formar la red de cadena de bloques.
+La misma, se rige por políticas acordadas por las organizaciones que la componen
+-- por ejemplo, definiendo quien pueden añadir nuevas organizaciones.
+Descubrirás cómo las aplicaciones consumen los servicios de libro mayor y
+contratos inteligentes, provistos por la red de cadenas de bloques.
 
-![network.structure](./network.diagram.1.png)
+![Estructura de la red](./network.diagram.1.png)
 
-*Four organizations, R1, R2, R3 and R4 have jointly decided, and written into an
-agreement, that they will set up and exploit a Hyperledger Fabric
-network. R4 has been assigned to be the network initiator  -- it has been given
-the power to set up the initial version of the network. R4 has no intention to
-perform business transactions on the network. R1 and R2 have a need for a
-private communications within the overall network, as do R2 and R3.
-Organization R1 has a client application that can perform business transactions
-within channel C1. Organization R2 has a client application that can do similar
-work both in channel C1 and C2. Organization R3 has a client application that
-can do this on channel C2. Peer node P1 maintains a copy of the ledger L1
-associated with C1. Peer node P2 maintains a copy of the ledger L1 associated
-with C1 and a copy of ledger L2 associated with C2. Peer node P3 maintains a
-copy of the ledger L2 associated with C2. The network is governed according to
-policy rules specified in network configuration NC4, the network is under the
-control of organizations R1 and R4. Channel C1 is governed according to the
-policy rules specified in channel configuration CC1; the channel is under the
-control of organizations R1 and R2.  Channel C2 is governed according to the
-policy rules specified in channel configuration CC2; the channel is under the
-control of organizations R2 and R3. There is an ordering service O4 that
-services as a network administration point for N, and uses the system channel.
-The ordering service also supports application channels C1 and C2, for the
-purposes of transaction ordering into blocks for distribution. Each of the four
-organizations has a preferred Certificate Authority.*
+*Cuatro organizaciones, R1, R2, R3 y R4 han decidido conjuntamente, y han
+redactado un acuerdo, que establecerán y explotarán una red de Hyperledger
+Fabric. A R4 se le ha asignado ser el iniciador de la red -- se le ha dado el
+poder de establecer la versión inicial de la red. R4 no tiene intención de
+realizar transacciones comerciales en la red. R1 y R2 tienen la necesidad de
+una comunicación privada dentro de la red general, al igual que R2 y R3. La
+organización R1 tiene una aplicación cliente que puede realizar transacciones
+comerciales dentro del canal C1. La organización R2 tiene una aplicación
+cliente que puede hacer un trabajo similar tanto en el canal C1 como en el C2.
+La organización R3 tiene una aplicación de cliente que puede trabajar en el
+canal C2. El nodo peer P1 mantiene una copia del libro mayor L1 asociado a C1.
+El nodo peer P2 mantiene una copia del libro mayor L1 asociado a C1 y una
+copia del libro mayor L2 asociado a C2. El nodo par P3 mantiene una copia del
+libro mayor L2 asociado a C2. La red se rige por las política especificadas en
+la configuración de red NC4. La red está bajo el control de las organizaciones
+R1 y R4. El canal C1 se rige según las política especificadas en la configuración
+de canal CC1; el canal está bajo el control de las organizaciones R1 y R2. El
+canal C2 se rige según las política especificadas en la configuración del canal
+CC2; el canal está bajo el control de las organizaciones R2 y R3. Existe un
+servicio de ordenamiento O4 que sirve como punto de administración para la red
+N, y utiliza el canal del sistema. El servicio de ordenamiento también soporta
+los canales de aplicación C1 y C2, a los efectos de ordenar transacciones en
+bloques para su distribución. Cada uno de los cuatro organizaciones tiene una
+autoridad de certificación preferida.*
 
-## Creating the Network
+## Creación de la red
 
-Let's start at the beginning by creating the basis for the network:
+Empecemos creando la base de la red:
 
-![network.creation](./network.diagram.2.png)
+![Creación de la red](./network.diagram.2.png)
 
-*The network is formed when an orderer is started. In our example network, N,
-the ordering service comprising a single node, O4, is configured according to a
-network configuration NC4, which gives administrative rights to organization
-R4. At the network level, Certificate Authority CA4 is used to dispense
-identities to the administrators and network nodes of the R4 organization.*
+*La red se forma cuando se inicia un ordenador. En nuestra red de ejemplo, N,
+el servicio de ordenamiento comprende un solo nodo, O4, el cual está configurado
+de acuerdo con una configuración de red NC4, que da derechos administrativos a
+la organización R4. A nivel de red, la autoridad de certificación CA4 se utiliza
+para dispensar identidades a los administradores y nodos de red de la organización
+R4.*
 
-We can see that the first thing that defines a **network, N,** is an **ordering
-service, O4**. It's helpful to think of the ordering service as the initial
-administration point for the network. As agreed beforehand, O4 is initially
-configured and started by an administrator in organization R4, and hosted in R4.
-The configuration NC4 contains the policies that describe the starting set of
-administrative capabilities for the network. Initially this is set to only give
-R4 rights over the network. This will change, as we'll see later, but for now R4
-is the only member of the network.
+Podemos ver que lo primero que define una **red, N,** es un **servicio de
+ordenamiento, O4**. Es útil pensar en el servicio de ordenamiento como el punto
+de administración inicial de la red. Como se acordó de antemano, O4 es inicialmente
+configurado y puesto en marcha por un administrador en la organización R4, y
+alojado en R4. La configuración NC4 contiene las políticas que describen el
+conjunto inicial de capacidades administrativas para la red. Inicialmente esto está
+configurado para dar sólo a R4 derechos sobre la red. Esto cambiará, como veremos
+más adelante, pero por ahora R4 es el único miembro de la red.
 
-### Certificate Authorities
+### Autoridad de certificación
 
-You can also see a Certificate Authority, CA4, which is used to issue
-certificates to administrators and network nodes. CA4 plays a key role in our
-network because it dispenses X.509 certificates that can be used to identify
-components as belonging to organization R4. Certificates issued by CAs
-can also be used to sign transactions to indicate that an organization endorses
-the transaction result -- a precondition of it being accepted onto the
-ledger. Let's examine these two aspects of a CA in a little more detail.
+Se puede apreciar una Autoridad de Certificación, CA4, que se utiliza para emitir
+certificados a los administradores y nodos de la red. CA4 juega un papel clave en
+nuestra red porque dispensa certificados X.509 que pueden ser usados para
+identificar componentes como pertenecientes a la organización R4. Los certificados
+emitidos por las CAs también pueden utilizarse en la firma de transacciones para
+indicar que una organización refrenda el resultado de la misma -- una condición
+previa para que sea aceptado en el libro mayor. Examinemos estos dos aspectos de
+una CA con un poco más de detalle.
 
-Firstly, different components of the blockchain network use certificates to
-identify themselves to each other as being from a particular organization.
-That's why there is usually more than one CA supporting a blockchain network --
-different organizations often use different CAs. We're going to use four CAs in
-our network; one for each organization. Indeed, CAs are so important that
-Hyperledger Fabric provides you with a built-in one (called *Fabric-CA*) to help
-you get going, though in practice, organizations will choose to use their own
-CA.
+En primer lugar, los diferentes componentes de la red de cadena de bloques utilizan
+certificados para identificarse entre sí como pertenecientes a una organización en
+particular. Es por eso que normalmente hay más de una CA por red de cadena de
+bloques -- diferentes organizaciones a menudo usan diferentes CA. Vamos a usar
+cuatro CAs en nuestra red; uno para cada organización. De hecho, los CA son tan
+importantes que Hyperledger Fabric proporciona uno incorporado (llamado *Fabric-CA*)
+para ayudar a ponerlo en marcha, aunque en la práctica, las organizaciones elegirán
+usar su propio CA.
 
-The mapping of certificates to member organizations is achieved by via
-a structure called a
-[Membership Services Provider (MSP)](../glossary.html#membership-services).
-Network configuration NC4 uses a named
-MSP to identify the properties of certificates dispensed by CA4 which associate
-certificate holders with organization R4. NC4 can then use this MSP name in
-policies to grant actors from R4 particular
-rights over network resources. An example of such a policy is to identify the
-administrators in R4 who can add new member organizations to the network. We
-don't show MSPs on these diagrams, as they would just clutter them up, but they
-are very important.
+El mapeo entre los certificados y las organizaciones miembros se realiza a
+través de una estructura llamada
+[Proveedor de Servicios de Membresía (MSP)](../glossary.html#proveedor-de-servicios-de-membresia).
+La configuración de red NC4 utiliza un MSP para identificar las propiedades de
+los certificados dispensados por la CA4 que asocian a los titulares de los
+certificados con la organización R4. El NC4 puede entonces utilizar el nombre
+del MSP en las políticas para conceder a los actores de R4 derechos particulares
+sobre los recursos de la red. Un ejemplo de esta política es identificar a los
+administradores de R4 que pueden añadir nuevas organizaciones miembros a la red.
+No mostramos los MSP en los diagramas, ya que sólo los complicarían, pero son
+muy importantes.
 
-Secondly, we'll see later how certificates issued by CAs are at the heart of the
-[transaction](../glossary.html#transaction) generation and validation process.
-Specifically, X.509 certificates are used in client application
-[transaction proposals](../glossary.html#proposal) and smart contract
-[transaction responses](../glossary.html#response) to digitally sign
-[transactions](../glossary.html#transaction).  Subsequently the network nodes
-who host copies of the ledger verify that transaction signatures are valid
-before accepting transactions onto the ledger.
+En segundo lugar, veremos cómo los certificados emitidos por las CAs son el núcleo
+de los procesos de generación de [transacciones](../glossary.html#transaccion) y
+validación. Concretamente, los certificados X.509 se utilizan en las
+[propuestas de transacción](../glossary.html#propuesta) de la aplicación cliente
+y en las [respuestas de transacción](../glossary.html#respuesta) de un contrato
+inteligente para firmar digitalmente [transacciones](../glossary.html#transaccion).
+Posteriormente, los nodos de red que albergan copias del libro mayor verifican
+que las firmas de las transacciones son válidas antes de aceptarlas.
 
-Let's recap the basic structure of our example blockchain network. There's a
-resource, the network N, accessed by a set of users defined by a Certificate
-Authority CA4, who have a set of rights over the resources in the network N as
-described by policies contained inside a network configuration NC4.  All of this
-is made real when we configure and start the ordering service node O4.
+Recapitulemos la estructura básica de nuestra red de cadena de bloques de ejemplo.
+Hay un recurso, la red N, al que acceden un conjunto de usuarios definidos por
+una autoridad de certificación CA4, que tienen un conjunto de derechos sobre los
+recursos de la red N descritos por las políticas contenidas en una configuración
+de red NC4. Todo esto se hace realidad cuando configuramos y ponemos en marcha
+el nodo de servicio de ordenamiento O4.
 
 ## Adding Network Administrators
 
