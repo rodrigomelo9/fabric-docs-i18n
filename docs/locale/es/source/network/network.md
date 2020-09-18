@@ -1,7 +1,7 @@
-# Red de cadena de bloques
+# Red blockchain
 
 Esta sección describe, **a nivel conceptual**, cómo Hyperledger Fabric permite a
-las organizaciones colaborar en la formación de redes de cadena de bloques. Si
+las organizaciones colaborar en la formación de redes blockchain. Si
 eres arquitecto, administrador o desarrollador, obtendrás una solida comprensión
 de la estructura principal y los procesos que las componen, los cuales serán
 introducidos a partir de un ejemplo práctico.
@@ -13,14 +13,14 @@ de la red utilizando políticas declarativas -- una característica clave de
 Hyperledger Fabric. En pocas palabras, conocerá sus principales componentes
 técnicos y las decisiones que las organizaciones deben tomar sobre ellos.
 
-## ¿Qué es una red de cadena de bloques?
+## ¿Qué es una red blockchain?
 
-Una red de cadena de bloques es una infraestructura tecnológica que proporciona
+Una red blockchain es una infraestructura tecnológica que proporciona
 a aplicaciones servicios de libro mayor y de contratos inteligentes (chaincode).
 Estos últimos se utilizan para generar transacciones que se distribuyen a todos
 los nodos peer de la red, donde se registran de forma inmutable en su copia del
 libro mayor. Las aplicaciones pueden ser las empleadas por usuarios finales o
-los administradores de redes de cadena de bloques.
+los administradores de redes blockchain.
 
 En la mayoría de los casos, múltiples [organizaciones](../glossary.html#organizacion)
 se unen como un [consorcio](../glossary.html#consorcio) para formar la red, y
@@ -37,11 +37,11 @@ un diagrama que representa el **estado final** de nuestra red de ejemplo.
 
 ¡No te preocupes si parece complicado! A medida que avancemos, construiremos la
 red pieza por pieza, para que veas cómo las organizaciones R1, R2, R3 y R4
-contribuyen a la infraestructura, ayudando a formar la red de cadena de bloques.
+contribuyen a la infraestructura, ayudando a formar la red blockchain.
 La misma, se rige por políticas acordadas por las organizaciones que la componen
 -- por ejemplo, definiendo quien pueden añadir nuevas organizaciones.
 Descubrirás cómo las aplicaciones consumen los servicios de libro mayor y
-contratos inteligentes, provistos por la red de cadenas de bloques.
+contratos inteligentes, provistos por la red blockchain.
 
 ![Estructura de la red](./network.diagram.1.png)
 
@@ -103,7 +103,7 @@ indicar que una organización refrenda el resultado de la misma -- una condició
 previa para que sea aceptado en el libro mayor. Examinemos estos dos aspectos de
 una CA con un poco más de detalle.
 
-En primer lugar, los diferentes componentes de la red de cadena de bloques utilizan
+En primer lugar, los diferentes componentes de la red blockchain utilizan
 certificados para identificarse entre sí como pertenecientes a una organización en
 particular. Es por eso que normalmente hay más de una CA por red de cadena de
 bloques -- diferentes organizaciones a menudo usan diferentes CA. Vamos a usar
@@ -133,151 +133,159 @@ inteligente para firmar digitalmente [transacciones](../glossary.html#transaccio
 Posteriormente, los nodos de red que albergan copias del libro mayor verifican
 que las firmas de las transacciones son válidas antes de aceptarlas.
 
-Recapitulemos la estructura básica de nuestra red de cadena de bloques de ejemplo.
+Recapitulemos la estructura básica de nuestra red blockchain de ejemplo.
 Hay un recurso, la red N, al que acceden un conjunto de usuarios definidos por
 una autoridad de certificación CA4, que tienen un conjunto de derechos sobre los
 recursos de la red N descritos por las políticas contenidas en una configuración
 de red NC4. Todo esto se hace realidad cuando configuramos y ponemos en marcha
 el nodo de servicio de ordenamiento O4.
 
-## Adding Network Administrators
+## Agregando administradores de red
 
-NC4 was initially configured to only allow R4 users administrative rights over
-the network. In this next phase, we are going to allow organization R1 users to
-administer the network. Let's see how the network evolves:
+El NC4 fue configurado inicialmente para permitir sólo a los usuarios de R4
+derechos administrativos sobre la red. En esta próxima fase, vamos a permitir
+que los usuarios de la organización R1 administren la red. Veamos cómo
+evoluciona la red:
 
-![network.admins](./network.diagram.2.1.png)
+![administradores de red](./network.diagram.2.1.png)
 
-*Organization R4 updates the network configuration to make organization R1 an
-administrator too.  After this point R1 and R4 have equal rights over the
-network configuration.*
+*La organización R4 actualiza la configuración de la red para hacer que la
+organización R1 sea también administrador. Después de este punto, R1 y R4
+tienen los mismos derechos sobre la configuración de la red.*
 
-We see the addition of a new organization R1 as an administrator -- R1 and R4
-now have equal rights over the network. We can also see that certificate
-authority CA1 has been added -- it can be used to identify users from the R1
-organization. After this point, users from both R1 and R4 can administer the
-network.
+Vemos el agregado de una nueva organización R1 como administrador -- R1 y R4
+ahora tienen los mismos derechos sobre la red. También podemos ver que se ha
+agregado la autoridad de certificación CA1 -- puede ser usada para identificar
+a los usuarios de la organización R1. Después de este punto, tanto los usuarios
+de R1 como de R4 pueden administrar la red.
 
-Although the orderer node, O4, is running on R4's infrastructure, R1 has shared
-administrative rights over it, as long as it can gain network access. It means
-that R1 or R4 could update the network configuration NC4 to allow the R2
-organization a subset of network operations.  In this way, even though R4 is
-running the ordering service, and R1 has full administrative rights over it, R2
-has limited rights to create new consortia.
+Aunque el nodo ordenador, O4, se ejecuta en la infraestructura de R4, R1 tiene
+derechos administrativos compartidos sobre él, siempre y cuando pueda obtener
+acceso a la red. Esto significa que tanto R1 como R4 podrían actualizar la
+configuración de la red NC4 para permitir a la organización R2 un subconjunto
+de operaciones de red. Así, aunque R4 esté ejecutando el servicio de
+ordenamiento y R1 tenga derechos administrativos completos sobre él, R2 tiene
+derechos limitados para crear nuevos consorcios.
 
-In its simplest form, the ordering service is a single node in the network, and
-that's what you can see in the example. Ordering services are usually
-multi-node, and can be configured to have different nodes in different
-organizations. For example, we might run O4 in R4 and connect it to O2, a
-separate orderer node in organization R1.  In this way, we would have a
-multi-site, multi-organization administration structure.
+En su forma más simple, el servicio de ordenamiento es un único nodo en la red,
+y eso es lo que se puede ver en el ejemplo. Los servicios de ordenamiento suelen
+ser multi-nodo -- pueden configurarse para tener nodos en diferentes
+organizaciones. Por ejemplo, podríamos ejecutar O4 en R4 y conectarlo a O2, un
+nodo de ordenamiento separado en la organización R1. De esta manera, tendríamos
+una estructura de administración multi-sitio y multi-organización.
 
-We'll discuss the ordering service a little [later in this topic](#the-ordering-service),
-but for now just think of the ordering service as an administration point which
-provides different organizations controlled access to the network.
+Discutiremos un poco sobre el servicio de ordenamiento
+[más adelante en esta sección](#el-servicio-de-ordenamiento), pero por ahora
+podemos verlo como un punto de administración que proporciona a las diferentes
+organizaciones un acceso controlado a la red.
 
-## Defining a Consortium
+## Definición de un consorcio
 
-Although the network can now be administered by R1 and R4, there is very little
-that can be done. The first thing we need to do is define a consortium. This
-word literally means "a group with a shared destiny", so it's an appropriate
-choice for a set of organizations in a blockchain network.
+Aunque ahora la red puede ser administrada por R1 y R4, es muy poco lo que se
+puede hacer. Lo primero que hay que realizar es definir un consorcio. Esto
+significa literalmente "un grupo con un destino compartido", por lo que es una
+elección apropiada para un conjunto de organizaciones en una red blockchain.
 
-Let's see how a consortium is defined:
+Veamos como se define un consorcio:
 
-![network.consortium](./network.diagram.3.png)
+![consorcio de la red](./network.diagram.3.png)
 
-*A network administrator defines a consortium X1 that contains two members,
-the organizations R1 and R2. This consortium definition is stored in the
-network configuration NC4, and will be used at the next stage of network
-development. CA1 and CA2 are the respective Certificate Authorities for these
-organizations.*
+*El administrador de la red define un consorcio X1 que contiene dos miembros, las
+organizaciones R1 y R2. Esta definición de consorcio se almacena en la
+configuración de la red NC4, y se utilizará en la próxima etapa de desarrollo
+de la red. CA1 y CA2 son las respectivas autoridades de certificación de estas
+organizaciones.*
 
-Because of the way NC4 is configured, only R1 or R4 can create new consortia.
-This diagram shows the addition of a new consortium, X1, which defines R1 and R2
-as its constituting organizations.  We can also see that CA2 has been added to
-identify users from R2. Note that a consortium can have any number of
-organizational members -- we have just shown two as it is the simplest
-configuration.
+Debido a la forma en que está configurado el NC4, sólo R1 o R4 puede crear
+nuevos consorcios. Este diagrama muestra el agregado de un nuevo consorcio, X1,
+que define a R1 y R2 como sus organizaciones constitutivas. También podemos ver
+que se ha añadido CA2 para identificar a los usuarios de R2. Observe que un
+consorcio puede tener cualquier número de miembros organizativos -- acabamos de
+mostrar dos ya que es la configuración más simple.
 
-Why are consortia important? We can see that a consortium defines the set of
-organizations in the network who share a need to **transact** with one another --
-in this case R1 and R2. It really makes sense to group organizations together if
-they have a common goal, and that's exactly what's happening.
+¿Por qué son importantes los consorcios? Podemos ver que un consorcio define el
+conjunto de organizaciones en la red que comparten una necesidad de
+**transmitir** entre sí -- en este caso R1 y R2. Realmente tiene sentido agrupar
+organizaciones si tienen un objetivo común, y eso es exactamente lo que está
+sucediendo.
 
-The network, although started by a single organization, is now controlled by a
-larger set of organizations.  We could have started it this way, with R1, R2 and
-R4 having shared control, but this build up makes it easier to understand.
+La red, aunque comenzó con una sola organización, ahora está controlada por un
+conjunto más grande de organizaciones. Podríamos haber empezado de esta manera,
+con R1, R2 y R4 teniendo el control compartido, pero esta construcción lo hace
+más fácil de entender.
 
-We're now going to use consortium X1 to create a really important part of a
-Hyperledger Fabric blockchain -- **a channel**.
+Ahora vamos a usar el consorcio X1 para crear una parte realmente importante de
+una blockchain de Hyperledger Fabric -- **un canal**.
 
-## Creating a channel for a consortium
+## Creación de un canal para un consorcio
 
-So let's create this key part of the Fabric blockchain network -- **a channel**.
-A channel is a primary communications mechanism by which the members of a
-consortium can communicate with each other. There can be multiple channels in a
-network, but for now, we'll start with one.
+Creemos entonces la parte clave de una red blockchain de Fabric -- **un canal**.
+Se trata del mecanismo de comunicación primario por el cual los miembros de un
+consorcio pueden comunicarse entre sí. Puede haber múltiples canales en una red,
+pero empezaremos con uno.
 
-Let's see how the first channel has been added to the network:
+Veamos cómo se ha añadido el primer canal a la red:
 
-![network.channel](./network.diagram.4.png)
+![Canal de red](./network.diagram.4.png)
 
-*A channel C1 has been created for R1 and R2 using the consortium definition X1.
-The channel is governed by a channel configuration CC1, completely separate to
-the network configuration.  CC1 is managed by R1 and R2 who have equal rights
-over C1. R4 has no rights in CC1 whatsoever.*
+*Se ha creado un canal C1 para R1 y R2 utilizando la definición del consorcio X1.
+El canal se rige por una configuración de canal CC1, completamente separada de
+la configuración de la red. CC1 está gestionado por R1 y R2 que tienen los
+mismos derechos sobre C1. R4 no tiene ningún derecho sobre CC1.*
 
-The channel C1 provides a private communications mechanism for the consortium
-X1. We can see channel C1 has been connected to the ordering service O4 but that
-nothing else is attached to it. In the next stage of network development, we're
-going to connect components such as client applications and peer nodes. But at
-this point, a channel represents the **potential** for future connectivity.
+El canal C1 proporciona un mecanismo de comunicaciones privado para el consorcio
+X1. Podemos ver que el canal C1 ha sido conectado al servicio de ordenamiento
+O4, pero que no hay nada más conectado a él. En la próxima etapa de desarrollo
+de la red, vamos a conectar componentes como aplicaciones cliente y nodos pares.
+Pero en este punto, un canal representa el **potencial** de la futura
+conectividad.
 
-Even though channel C1 is a part of the network N, it is quite distinguishable
-from it. Also notice that organizations R3 and R4 are not in this channel -- it
-is for transaction processing between R1 and R2. In the previous step, we saw
-how R4 could grant R1 permission to create new consortia. It's helpful to
-mention that R4 **also** allowed R1 to create channels! In this diagram, it
-could have been organization R1 or R4 who created a channel C1. Again, note
-that a channel can have any number of organizations connected to it -- we've
-shown two as it's the simplest configuration.
+Aunque el canal C1 es una parte de la red N, se distingue bastante de ella.
+También note que las organizaciones R3 y R4 no están en este canal -- es para
+el procesamiento de transacciones entre R1 y R2. En el paso anterior, vimos cómo
+R4 podía conceder a R1 el permiso para crear nuevos consorcios. Es útil
+mencionar que R4 **también** permitió a R1 crear canales! En este diagrama,
+podría haber sido la organización R1 o R4 la que creara un canal C1. De nuevo,
+notar que un canal puede tener cualquier número de organizaciones conectadas
+-- hemos mostrado dos ya que es la configuración más simple.
 
-Again, notice how channel C1 has a completely separate configuration, CC1, to
-the network configuration NC4. CC1 contains the policies that govern the
-rights that R1 and R2 have over the channel C1 -- and as we've seen, R3 and
-R4 have no permissions in this channel. R3 and R4 can only interact with C1 if
-they are added by R1 or R2 to the appropriate policy in the channel
-configuration CC1. An example is defining who can add a new organization to the
-channel. Specifically, note that R4 cannot add itself to the channel C1 -- it
-must, and can only, be authorized by R1 or R2.
+De nuevo, note cómo el canal C1 tiene una configuración completamente separada,
+CC1, de la configuración de la red NC4. CC1 contiene las políticas que gobiernan
+los derechos que R1 y R2 tienen sobre el canal C1 -- y como hemos visto, R3 y R4
+no tienen permisos en este canal. R3 y R4 sólo pueden interactuar con C1 si son
+añadidos por R1 o R2 a la política apropiada en la configuración del canal CC1.
+Un ejemplo es definir quién puede añadir una nueva organización al canal.
+Específicamente, note que R4 no puede agregarse al canal C1 -- debe, y sólo
+puede, ser autorizado por R1 o R2.
 
-Why are channels so important? Channels are useful because they provide a
-mechanism for private communications and private data between the members of a
-consortium. Channels provide privacy from other channels, and from the network.
-Hyperledger Fabric is powerful in this regard, as it allows organizations to
-share infrastructure and keep it private at the same time.  There's no
-contradiction here -- different consortia within the network will have a need
-for different information and processes to be appropriately shared, and channels
-provide an efficient mechanism to do this.  Channels provide an efficient
-sharing of infrastructure while maintaining data and communications privacy.
+¿Por qué son tan importantes los canales? Los canales son útiles porque
+proporcionan un mecanismo para comunicaciones y datos privados entre los miembros
+de un consorcio. Los canales proveen privacidad de otros canales, y de la red.
+Hyperledger Fabric es poderoso en este sentido, ya que permite a las
+organizaciones compartir la infraestructura y mantenerla privada al mismo tiempo.
+No hay ninguna contradicción aquí -- diferentes consorcios dentro de la red
+tendrán la necesidad de compartir adecuadamente información y diferentes
+procesos, y los canales proporcionan un mecanismo eficiente para hacerlo. Los
+canales proveen un intercambio eficiente de infraestructura mientras mantienen
+la privacidad de los datos y las comunicaciones.
 
-We can also see that once a channel has been created, it is in a very real sense
-"free from the network". It is only organizations that are explicitly specified
-in a channel configuration that have any control over it, from this time forward
-into the future. Likewise, any updates to network configuration NC4 from this
-time onwards will have no direct effect on channel configuration CC1; for
-example if consortia definition X1 is changed, it will not affect the members of
-channel C1. Channels are therefore useful because they allow private
-communications between the organizations constituting the channel. Moreover, the
-data in a channel is completely isolated from the rest of the network, including
-other channels.
+También podemos ver que una vez que un canal ha sido creado, es en un sentido
+muy real "libre de la red". Sólo las organizaciones que se especifican
+explícitamente en una configuración de canal tienen algún control sobre él,
+desde este momento y en adelante a futuro. Asimismo, cualquier actualización de
+la configuración de la red NC4 a partir de este momento no tendrá ningún efecto
+directo en la configuración del canal CC1; por ejemplo, si se cambia la
+definición de consorcio X1, no afectará a los miembros del canal C1. Por
+consiguiente, los canales son útiles porque permiten las comunicaciones privadas
+entre las organizaciones que constituyen el canal. Además, los datos de un canal
+están completamente aislados del resto de la red, incluidos otros canales.
 
-As an aside, there is also a special **system channel** defined for use by the
-ordering service.  It behaves in exactly the same way as a regular channel,
-which are sometimes called **application channels** for this reason.  We don't
-normally need to worry about this channel, but we'll discuss a little bit more
-about it [later in this topic](#the-ordering-service).
+Como nota aparte, hay también un **canal de sistema** especial definido para su
+uso por el servicio de ordenamiento. Se comporta exactamente de la misma manera
+que un canal regular, que a veces son llamados **canales de aplicación** por
+esta razón. Normalmente no necesitamos preocuparnos por este canal, pero
+discutiremos un poco más sobre él
+[más adelante en esta sección](#el-servicio-de-ordenamiento).
 
 ## Peers and Ledgers
 
@@ -742,7 +750,7 @@ example, in our network peer nodes P1 and P2 both have a copy of channel
 configuration CC1, and by the time the network is fully complete, peer nodes P2
 and P3 will both have a copy of channel configuration CC2. Similarly ordering
 service node O4 has a copy of the network configuration, but in a [multi-node
-configuration](#the-ordering-service), every ordering service node will have its
+configuration](#el-servicio-de-ordenamiento), every ordering service node will have its
 own copy of the network configuration.
 
 Both network and channel configurations are kept consistent using the same
@@ -859,7 +867,7 @@ application A2 and peer node P2 are using a mixed visual vocabulary -- both
 lines and connections. You can see that they are equivalent; they are visual
 synonyms.
 
-### The ordering service
+### El servicio de ordenamiento
 
 The observant reader may notice that the ordering service node appears to be a
 centralized component; it was used to create the network initially, and connects
